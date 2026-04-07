@@ -61,6 +61,38 @@ header p {
     font-size: 1.1rem;
 }
 
+.api-key-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 30px;
+}
+.api-key-section .lock-icon {
+    color: var(--text-secondary);
+    min-width: 20px;
+}
+.api-key-section input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    flex-grow: 1;
+    outline: none;
+}
+.api-key-section input::placeholder {
+    color: var(--text-secondary);
+}
+.api-key-section .secondary-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    flex: none;
+}
+
 .upload-section {
     border: 2px dashed var(--border);
     border-radius: 16px;

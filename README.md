@@ -19,8 +19,9 @@ Because Screw Counter AI relies entirely on standard front-end technologies (Van
 1. Clone or download this repository to your local machine.
 2. Navigate to the project folder.
 3. Double-click on `index.html` to open it in your preferred web browser.
-4. Drag and drop an image containing screws onto the upload section, and click **Count Screws**.
-5. Wait for the API to process the image and enjoy your results dashboard!
+4. Enter your Roboflow API key in the input field at the top and click **Save** (it will be securely persisted in your browser for future use).
+5. Drag and drop an image containing screws onto the upload section, and click **Count Screws**.
+6. Wait for the API to process the image and enjoy your results dashboard!
 
 ## Technologies Used
 
@@ -29,6 +30,8 @@ Because Screw Counter AI relies entirely on standard front-end technologies (Van
 - **Vanilla JavaScript (ES6+)** (Async/Await APIs, DOM manipulation, FileReader)
 - **Roboflow Inference API** (Handling the computer vision workflow and object detection modeling)
 
-## Note on API Keys
+## Security & API Keys
 
-The application currently has the Roboflow API key hardcoded into `screw.js` (`api_key: 'a5PBSFBZDjnhNq0ZK9vd'`). If you plan to deploy this on a public hosting service or expand its usage, please ensure you securely manage your API keys, perhaps by running a lightweight backend server.
+This application uses a secure "Bring Your Own Key" (BYOK) approach to handle API credentials purely on the front-end. Your Roboflow API key is **never** hardcoded into the source code, securing the application for pushing to public Git repositories (like GitHub) or deploying as a static site. 
+
+Instead, the application dynamically prompts you for the API key via the web interface. Once provided, it is securely cached into your browser's `localStorage`, avoiding the need to continuously re-enter it, while keeping it strictly on your personal device.

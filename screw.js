@@ -8,7 +8,29 @@ const resultSection = document.getElementById('result-section');
 const loadingSpinner = document.getElementById('loading-spinner');
 const resultContent = document.getElementById('result-content');
 
+const apiKeyInput = document.getElementById('api-key-input');
+const saveKeyBtn = document.getElementById('save-key-btn');
+
 let currentBase64Image = null;
+
+// Initialize API Key from LocalStorage
+const savedKey = localStorage.getItem('roboflow_api_key');
+if (savedKey && apiKeyInput) {
+    apiKeyInput.value = savedKey;
+}
+
+if (saveKeyBtn) {
+    saveKeyBtn.addEventListener('click', () => {
+        const key = apiKeyInput.value.trim();
+        if (key) {
+            localStorage.setItem('roboflow_api_key', key);
+            alert('API Key saved safely to your local browser storage!');
+        } else {
+            localStorage.removeItem('roboflow_api_key');
+            alert('API Key removed.');
+        }
+    });
+}
 
 // Handle drag and drop events
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -85,6 +107,15 @@ countBtn.addEventListener('click', async () => {
     resultContent.classList.add('hidden');
 
     try {
+        const apiKey = localStorage.getItem('roboflow_api_key') || apiKeyInput?.value?.trim();
+        if (!apiKey) {
+            alert("Please enter and save your Roboflow API Key first.");
+            countBtn.disabled = false;
+            cancelBtn.disabled = false;
+            loadingSpinner.classList.add('hidden');
+            resultSection.classList.add('hidden');
+            return;
+        }
         // Roboflow requires the raw base64 string without the prefix (e.g., data:image/png;base64,)
         const base64Data = currentBase64Image.split(',')[1];
 
@@ -94,7 +125,7 @@ countBtn.addEventListener('click', async () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                api_key: 'a5PBSFBZDjnhNq0ZK9vd',
+                api_key: apiKey,
                 inputs: {
                     "image": {
                         "type": "base64",
