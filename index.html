@@ -28,6 +28,21 @@
                 <h2>Drag & Drop your image here</h2>
                 <p>or click to browse from your computer</p>
                 <input type="file" id="file-input" accept="image/*" hidden>
+                
+                <div class="divider"><span>OR</span></div>
+                <button id="open-camera-btn" class="secondary-btn camera-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    Take a Photo
+                </button>
+            </div>
+
+            <div class="camera-section hidden" id="camera-section">
+                <video id="camera-stream" autoplay playsinline></video>
+                <div class="action-buttons">
+                    <button id="cancel-camera-btn" class="secondary-btn">Cancel</button>
+                    <button id="snap-btn" class="primary-btn">Snap Picture</button>
+                </div>
+                <canvas id="camera-canvas" hidden></canvas>
             </div>
 
             <div class="preview-section hidden" id="preview-section">

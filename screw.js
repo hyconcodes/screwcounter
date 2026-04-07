@@ -11,7 +11,16 @@ const resultContent = document.getElementById('result-content');
 const apiKeyInput = document.getElementById('api-key-input');
 const saveKeyBtn = document.getElementById('save-key-btn');
 
+// Camera Elements
+const cameraSection = document.getElementById('camera-section');
+const cameraStream = document.getElementById('camera-stream');
+const cameraCanvas = document.getElementById('camera-canvas');
+const openCameraBtn = document.getElementById('open-camera-btn');
+const cancelCameraBtn = document.getElementById('cancel-camera-btn');
+const snapBtn = document.getElementById('snap-btn');
+
 let currentBase64Image = null;
+let stream = null;
 
 // Initialize API Key from LocalStorage
 const savedKey = localStorage.getItem('roboflow_api_key');
@@ -95,6 +104,54 @@ cancelBtn.addEventListener('click', () => {
     previewSection.classList.add('hidden');
     resultSection.classList.add('hidden');
 });
+
+// Camera logic
+if (openCameraBtn) {
+    openCameraBtn.addEventListener('click', async (e) => {
+        e.stopPropagation(); // prevent triggering file input
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            cameraStream.srcObject = stream;
+            dropZone.classList.add('hidden');
+            cameraSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+        } catch (err) {
+            console.error("Error accessing the camera", err);
+            alert("Unable to access the camera: " + err.message);
+        }
+    });
+
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+    }
+
+    cancelCameraBtn.addEventListener('click', () => {
+        stopCamera();
+        cameraSection.classList.add('hidden');
+        dropZone.classList.remove('hidden');
+    });
+
+    snapBtn.addEventListener('click', () => {
+        if (!stream) return;
+        
+        // Draw video frame to canvas
+        cameraCanvas.width = cameraStream.videoWidth;
+        cameraCanvas.height = cameraStream.videoHeight;
+        const ctx = cameraCanvas.getContext('2d');
+        ctx.drawImage(cameraStream, 0, 0, cameraCanvas.width, cameraCanvas.height);
+        
+        // Get base64 string
+        currentBase64Image = cameraCanvas.toDataURL('image/jpeg', 0.9);
+        imagePreview.src = currentBase64Image;
+        
+        stopCamera();
+        cameraSection.classList.add('hidden');
+        previewSection.classList.remove('hidden');
+    });
+}
 
 countBtn.addEventListener('click', async () => {
     if (!currentBase64Image) return;
